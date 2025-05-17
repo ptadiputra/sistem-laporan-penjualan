@@ -1,0 +1,56 @@
+.select2-container--default .select2-selection--single {
+    height: 38px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    top: 5px!important;
+    right: 10px!important;
+}
+
+.alert-select2 {
+    border: 1px solid red !important;
+    border-radius: 5px;
+}
+
+.select2-container--default .select2-selection--single {
+    padding-left: 5px;
+}
+
+.sidebar-light-primary .nav-sidebar > .nav-item > .nav-link.active {
+    background-color: #fd9631;
+    font-weight: 600;
+    color: black;
+}
+
+.card-primary.card-outline {
+    border-top: 3px solid #fd9631;
+}
+
+.btn {
+    border-radius: 7px;
+    white-space: nowrap;
+}
+
+.col-action {
+    white-space: nowrap;
+}
+
+.orange-button:hover {
+    color: #000000;
+    background-color: #ec7701;
+    border-color: #fd9631;
+}
+.orange-button {
+    color: #000000;
+    background-color: #fd9631;
+    border-color: #fd9631;
+    box-shadow: none;
+}
+
+.small-box>.small-box-footer {
+    background-color: #fd9631;
+}
+.small-box>.small-box-footer:hover {
+    background-color: #ec7701;
+    border-color: #fd9631;
+}
