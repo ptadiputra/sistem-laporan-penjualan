@@ -29,7 +29,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':superadmin,kasir'])->group(
     Route::resource('/transaksi-masuk', TransaksiMasukController::class)->middleware('auth');
     Route::get('/transaksi-masuk/harga_jasa/{id}', [TransaksiMasukController::class, 'harga_jasa'])->name('transaksi-masuk.harga_jasa')->middleware('auth');
     Route::get('/transaksi-masuk/nota/{transaksiMasuk}', [TransaksiMasukController::class, 'nota'])->name('transaksi-masuk.nota')->middleware('auth');
-    
+
     // -- kasir
     Route::resource('/kasir', KasirController::class);
 });
@@ -49,24 +49,19 @@ Route::middleware(['auth', RoleMiddleware::class . ':superadmin,admin'])->group(
     // -- transaksi-keluar
     Route::resource('/transaksi-keluar', TransaksiKeluarController::class)->middleware('auth');
     Route::get('/transaksi-keluar/harga_barang/{id}', [TransaksiKeluarController::class, 'harga_barang'])->name('transaksi-keluar.harga_barang')->middleware('auth');
-    
+
     // -- supplier
     Route::resource('/supplier', SupplierController::class)->middleware('auth');
-    
+
     // -- kategori barang
     Route::resource('/kategori-barang', KategoriBarangController::class)->middleware('auth');
-    
+
     // -- barang
     Route::resource('/barang', BarangController::class)->middleware('auth');
 
-    // -- akun
-    Route::resource('/akun', AkunController::class)->middleware('auth');
 
     // -- customer
     Route::resource('/customer', CustomerController::class)->middleware('auth');
-
-    // -- jurnal-entry
-    Route::resource('/jurnal-entry', JurnalEntryController::class)->middleware('auth');
 });
 
 
