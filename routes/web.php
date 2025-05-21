@@ -6,9 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\KategoriBarangController;
 use App\Http\Controllers\BarangController;
-use App\Http\Controllers\AkunController;
 use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\JurnalEntryController;
 use App\Http\Controllers\KasirController;
 use App\Http\Controllers\TransaksiKeluarController;
 use App\Http\Controllers\TransaksiMasukController;
@@ -24,7 +22,7 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout')->middl
 // -- dashboard
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
 
-Route::middleware(['auth', RoleMiddleware::class . ':superadmin,kasir'])->group(function () {
+Route::middleware(['auth', RoleMiddleware::class . ':superadmin,admin,kasir'])->group(function () {
     // -- transaksi-masuk
     Route::resource('/transaksi-masuk', TransaksiMasukController::class)->middleware('auth');
     Route::get('/transaksi-masuk/harga_jasa/{id}', [TransaksiMasukController::class, 'harga_jasa'])->name('transaksi-masuk.harga_jasa')->middleware('auth');
@@ -34,7 +32,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':superadmin,kasir'])->group(
     Route::resource('/kasir', KasirController::class);
 });
 
-Route::middleware(['auth', RoleMiddleware::class . ':superadmin'])->group(function () {
+Route::middleware(['auth', RoleMiddleware::class . ':superadmin,owner'])->group(function () {
     // -- user
     Route::get('/user', [UserController::class, 'list'])->name('user.list')->middleware('auth');
     Route::get('/user/create', [UserController::class, 'create'])->name('user.create')->middleware('auth');
@@ -45,7 +43,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':superadmin'])->group(functi
     Route::delete('/user/delete/{user}', [UserController::class, 'destroy'])->name('user.delete')->middleware('auth');
 });
 
-Route::middleware(['auth', RoleMiddleware::class . ':superadmin,admin'])->group(function () {
+Route::middleware(['auth', RoleMiddleware::class . ':superadmin,kasir,admin'])->group(function () {
     // -- transaksi-keluar
     Route::resource('/transaksi-keluar', TransaksiKeluarController::class)->middleware('auth');
     Route::get('/transaksi-keluar/harga_barang/{id}', [TransaksiKeluarController::class, 'harga_barang'])->name('transaksi-keluar.harga_barang')->middleware('auth');

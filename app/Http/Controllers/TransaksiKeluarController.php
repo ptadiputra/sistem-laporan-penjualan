@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\TransaksiKeluar;
 use App\Http\Controllers\Controller;
-use App\Models\Akun;
 use App\Models\Barang;
 use App\Models\Supplier;
 use App\Models\User;
@@ -30,7 +29,6 @@ class TransaksiKeluarController extends Controller
     {
         return view('transaksi_keluar/create', [
             "title" => "Transaksi Keluar",
-            "akuns" => Akun::all(),
             "users" => User::all(),
             "suppliers" => Supplier::all(),
             "barangs" => Barang::all(),
@@ -93,7 +91,6 @@ class TransaksiKeluarController extends Controller
     {
         return view('transaksi_keluar/edit', [
             "title" => "Transaksi Keluar",
-            "akuns" => Akun::all(),
             "users" => User::all(),
             "suppliers" => Supplier::all(),
             "barangs" => Barang::all(),

@@ -38,30 +38,10 @@
                                 <td><b>Tanggal Transaksi</b></td>
                                 <td>: {{ $transaksi_masuk->tanggal->format('d/m/Y') }}</td>
                             </tr>
-                            {{-- <tr>
-                                <td><b>Akun</b></td>
-                                <td>: Penjualan</td>
-                            </tr> --}}
                             <tr>
                                 <td><b>Kasir</b></td>
                                 <td>: {{ $transaksi_masuk->user->name }}</td>
                             </tr>
-                            {{-- <tr>
-                                <td><b>Barang</b></td>
-                                <td>: {{ $transaksi_masuk->barang->nama }}</td>
-                            </tr>
-                            <tr>
-                                <td><b>Jumlah</b></td>
-                                <td>: {{ $transaksi_masuk->qty_barang }}</td>
-                            </tr>
-                            <tr>
-                                <td><b>Harga Satuan</b></td>
-                                <td>: <span class="to-currency">{{ $transaksi_masuk->harga_satuan_barang }}</span></td>
-                            </tr>
-                            <tr>
-                                <td><b>Harga Total</b></td>
-                                <td>: <span class="to-currency">{{ $transaksi_masuk->harga_total }}</span></td>
-                            </tr> --}}
                             <tr>
                                 <td><b>Total Harga</b></td>
                                 <td>: <span class="to-currency">{{ $transaksi_masuk->total_harga }}</span></td>

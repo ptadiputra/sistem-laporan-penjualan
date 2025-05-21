@@ -3,12 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use App\Models\Supplier;
 use App\Models\Barang;
-use App\Models\Akun;
-use App\Models\TransaksiKeluar;
-use App\Models\TransaksiMasuk;
-use App\Models\JurnalEntry;
 use App\Models\KategoriBarang;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -24,11 +19,9 @@ class DatabaseSeeder extends Seeder
         // Supplier::factory(5)->create();
         // Barang::factory(5)->create();
         // Jasa::factory(5)->create();
-        // Akun::factory(5)->create();
         // TransaksiKeluar::factory(5)->create();
         // TransaksiMasuk::factory(3)->tipeBarang()->create();
         // TransaksiMasuk::factory(3)->tipeJasa()->create();
-        // JurnalEntry::factory(5)->create();
 
         // User::factory()->create([
         //     'name' => 'Test User',

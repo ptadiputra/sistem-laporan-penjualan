@@ -25,7 +25,6 @@ class KasirController extends Controller
         $validatedData = $request->validate([
             // field TransaksiMasuk
             'tanggal' => 'required',
-            'akun' => 'required',
             'user_id' => 'required',
             'customer_id' => 'required',
             'sub_total' => 'required',
@@ -56,7 +55,6 @@ class KasirController extends Controller
         $transaksiMasuk = TransaksiMasuk::create([
             'kode' => $validatedData['kode'],
             'tanggal' => $validatedData['tanggal'],
-            'akun' => $validatedData['akun'],
             'user_id' => $validatedData['user_id'],
             'customer_id' => $validatedData['customer_id'],
             'sub_total' => $validatedData['sub_total'],

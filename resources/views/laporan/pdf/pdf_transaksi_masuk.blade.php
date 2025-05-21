@@ -16,8 +16,6 @@
             <tr>
                 <th>No</th>
                 <th>Tanggal</th>
-                {{-- <th>Kode Akun</th> --}}
-                {{-- <th>Akun</th> --}}
                 <th>Sub Total</th>
                 <th>Total</th>
             </tr>
@@ -27,8 +25,6 @@
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $item->tanggal->format('d/m/Y') }}</td>
-                    {{-- <td>{{ $item->akun->kode }}</td> --}}
-                    {{-- <td>{{ $item->akun->nama }}</td> --}}
                     <td class="to-currency">{{ $item->sub_total }}</td>
                     <td class="to-currency">{{ $item->total }}</td>
                 </tr>

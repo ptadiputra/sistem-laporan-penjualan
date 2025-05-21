@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Models\Jasa;
 use App\Models\Barang;
 use App\Http\Controllers\Controller;
-use App\Models\Akun;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
@@ -47,7 +46,6 @@ class TransaksiMasukController extends Controller
             'qty_barang' => 'required|numeric|min:1',
             'harga_satuan_barang' => 'required',
             'harga_total' => 'required',
-            'akun' => 'required',
             'tanggal_pengiriman' => 'required',
             'catatan_pengiriman' => 'nullable|string',
         ]);

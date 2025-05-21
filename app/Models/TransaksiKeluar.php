@@ -28,9 +28,4 @@ class TransaksiKeluar extends Model
     {
         return $this->belongsTo(Supplier::class);
     }
-
-    public function akun()
-    {
-        return $this->belongsTo(Akun::class);
-    }
 }

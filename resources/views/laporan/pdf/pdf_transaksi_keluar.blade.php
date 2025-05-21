@@ -16,8 +16,6 @@
             <tr>
                 <th>No</th>
                 <th>Tanggal</th>
-                {{-- <th>Kode Akun</th> --}}
-                {{-- <th>Akun</th> --}}
                 <th>Keterangan</th>
                 <th>Jumlah</th>
             </tr>
@@ -27,8 +25,6 @@
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $item->tanggal->format('d/m/Y') }}</td>
-                    {{-- <td>{{ $item->akun->kode }}</td> --}}
-                    {{-- <td>{{ $item->akun->nama }}</td> --}}
                     <td>{{ $item->keterangan }}</td>
                     <td class="to-currency">{{ $item->harga_total }}</td>
                 </tr>

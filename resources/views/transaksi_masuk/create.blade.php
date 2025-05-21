@@ -31,7 +31,6 @@
                     <form action="{{ route('transaksi-masuk.store') }}" method="post">
                         @csrf
                         <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
-                        <input type="hidden" name="akun" value="Penjualan">
                         <div class="form-group">
                             <label for="tanggal">Tanggal</label>
                             <input type="date" class="form-control @error('tanggal') is-invalid @enderror" id="tanggal" name="tanggal" value="{{ old('tanggal') }}">

@@ -33,7 +33,7 @@
                     </li>
                 @endif
 
-                @if (auth()->user()->hasRole(['superadmin', 'kasir']))
+                @if (auth()->user()->hasRole(['superadmin', 'admin']))
                     <li class="nav-item">
                         <a href="{{ route('transaksi-masuk.index') }}"
                             class="nav-link {{ Request::routeIs('transaksi-masuk.*') ? 'active' : '' }}">
@@ -45,7 +45,7 @@
                     </li>
                 @endif
 
-                @if (auth()->user()->hasRole(['superadmin', 'admin']))
+                @if (auth()->user()->hasRole(['superadmin','kasir', 'admin']))
                     <li class="nav-item">
                         <a href="{{ route('transaksi-keluar.index') }}"
                             class="nav-link {{ Request::routeIs('transaksi-keluar.*') ? 'active' : '' }}">
@@ -57,11 +57,11 @@
                     </li>
                 @endif
 
-                @if (auth()->user()->hasRole(['superadmin', 'admin']))
+                @if (auth()->user()->hasRole(['superadmin', 'admin','owner']))
                     <li
-                        class="nav-item {{ Request::routeIs(['user.*', 'supplier.*', 'barang.*', 'jasa.*', 'akun.*', 'kategori-akun.*', 'kategori-barang.*', 'customer.*']) ? 'menu-open' : '' }}">
+                        class="nav-item {{ Request::routeIs(['user.*', 'supplier.*', 'barang.*', 'jasa.*',   'kategori-barang.*', 'customer.*']) ? 'menu-open' : '' }}">
                         <a href="#"
-                            class="nav-link {{ Request::routeIs(['user.*', 'supplier.*', 'barang.*', 'jasa.*', 'akun.*', 'kategori-akun.*', 'kategori-barang.*', 'customer.*']) ? 'active' : '' }}">
+                            class="nav-link {{ Request::routeIs(['user.*', 'supplier.*', 'barang.*', 'jasa.*',   'kategori-barang.*', 'customer.*']) ? 'active' : '' }}">
                             <i class="nav-icon fas fa-table"></i>
                             <p>
                                 Master Data
@@ -69,7 +69,7 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-                            @if (auth()->user()->hasRole(['superadmin']))
+                            @if (auth()->user()->hasRole(['superadmin','owner']))
                                 <li class="nav-item">
                                     <a href="{{ route('user.list') }}"
                                         class="nav-link {{ Request::routeIs('user.*') ? 'active' : '' }}">
@@ -80,6 +80,7 @@
                                     </a>
                                 </li>
                             @endif
+                            @if (auth()->user()->hasRole(['superadmin','admin']))
                             <li class="nav-item">
                                 <a href="{{ route('kategori-barang.index') }}"
                                     class="nav-link {{ Request::routeIs('kategori-barang.*') ? 'active' : '' }}">
@@ -89,6 +90,8 @@
                                     </p>
                                 </a>
                             </li>
+                            @endif
+                            @if (auth()->user()->hasRole(['superadmin','admin']))
                             <li class="nav-item">
                                 <a href="{{ route('barang.index') }}"
                                     class="nav-link {{ Request::routeIs('barang.*') ? 'active' : '' }}">
@@ -98,6 +101,8 @@
                                     </p>
                                 </a>
                             </li>
+                            @endif
+                            @if (auth()->user()->hasRole(['superadmin','admin']))
                             <li class="nav-item">
                                 <a href="{{ route('supplier.index') }}"
                                     class="nav-link {{ Request::routeIs('supplier.*') ? 'active' : '' }}">
@@ -107,6 +112,8 @@
                                     </p>
                                 </a>
                             </li>
+                            @endif
+                            @if (auth()->user()->hasRole(['superadmin','admin']))
                             <li class="nav-item">
                                 <a href="{{ route('customer.index') }}"
                                     class="nav-link {{ Request::routeIs('customer.*') ? 'active' : '' }}">
@@ -116,6 +123,7 @@
                                     </p>
                                 </a>
                             </li>
+                            @endif
                         </ul>
                     </li>
                 @endif
