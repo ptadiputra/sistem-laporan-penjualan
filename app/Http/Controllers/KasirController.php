@@ -7,7 +7,9 @@ use App\Models\Barang;
 use App\Models\Customer;
 use App\Models\TransaksiMasuk;
 use App\Models\TransaksiMasukDetail;
+use App\Services\StockOpnameService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class KasirController extends Controller
 {
@@ -34,7 +36,7 @@ class KasirController extends Controller
             'tanggal_pengiriman' => 'required',
             'alamat_pengiriman' => 'required',
             'catatan_pengiriman' => 'nullable|string',
-            
+
             // field TransaksiMasukDetail
             'barang_id' => 'required|array',
             'qty_barang' => 'required|array',
@@ -49,46 +51,56 @@ class KasirController extends Controller
             $kode = $last_data->id + 1;
         }
         $kode = str_pad($kode, 4, '0', STR_PAD_LEFT);
-        $validatedData['kode'] =  "TM-".$kode;
-        
-        // -- save TransaksiMasuk
-        $transaksiMasuk = TransaksiMasuk::create([
-            'kode' => $validatedData['kode'],
-            'tanggal' => $validatedData['tanggal'],
-            'user_id' => $validatedData['user_id'],
-            'customer_id' => $validatedData['customer_id'],
-            'sub_total' => $validatedData['sub_total'],
-            'diskon' => $validatedData['diskon'],
-            'biaya_pengiriman' => $validatedData['biaya_pengiriman'],
-            'total' => $validatedData['total'],
-            'tanggal_pengiriman' => $validatedData['tanggal_pengiriman'],
-            'alamat_pengiriman' => $validatedData['alamat_pengiriman'],
-            'catatan_pengiriman' => $validatedData['catatan_pengiriman'] ?? null,
-        ]);
+        $validatedData['kode'] = "TM-" . $kode;
 
-        // Simpan detail barang
-        foreach ($validatedData['barang_id'] as $i => $barangId) {
-            // Optional: lewati jika data barang kosong
-            if (!$barangId || !$validatedData['qty_barang'][$i]) {
-                continue;
-            }
-
-            $transaksiMasukDetail = TransaksiMasukDetail::create([
-                'transaksi_masuk_id' => $transaksiMasuk->id,
-                'barang_id' => $barangId,
-                'qty_barang' => $validatedData['qty_barang'][$i],
-                'harga_satuan_barang' => $validatedData['harga_satuan_barang'][$i],
-                'harga_total' => $validatedData['harga_total'][$i],
+        try {
+            // -- save TransaksiMasuk
+            DB::beginTransaction();
+            $transaksiMasuk = TransaksiMasuk::create([
+                'kode' => $validatedData['kode'],
+                'tanggal' => $validatedData['tanggal'],
+                'user_id' => $validatedData['user_id'],
+                'customer_id' => $validatedData['customer_id'],
+                'sub_total' => $validatedData['sub_total'],
+                'diskon' => $validatedData['diskon'],
+                'biaya_pengiriman' => $validatedData['biaya_pengiriman'],
+                'total' => $validatedData['total'],
+                'tanggal_pengiriman' => $validatedData['tanggal_pengiriman'],
+                'alamat_pengiriman' => $validatedData['alamat_pengiriman'],
+                'catatan_pengiriman' => $validatedData['catatan_pengiriman'] ?? null,
             ]);
 
-            // -- change stock barang
-            $qty = $transaksiMasukDetail->qty_barang;
-            $barang = $transaksiMasukDetail->barang;
-            $barang->stock -= $qty;
-            $barang->save();
+            // Simpan detail barang
+            foreach ($validatedData['barang_id'] as $i => $barangId) {
+                // Optional: lewati jika data barang kosong
+                if (!$barangId || !$validatedData['qty_barang'][$i]) {
+                    continue;
+                }
+
+                $transaksiMasukDetail = TransaksiMasukDetail::create([
+                    'transaksi_masuk_id' => $transaksiMasuk->id,
+                    'barang_id' => $barangId,
+                    'qty_barang' => $validatedData['qty_barang'][$i],
+                    'harga_satuan_barang' => $validatedData['harga_satuan_barang'][$i],
+                    'harga_total' => $validatedData['harga_total'][$i],
+                ]);
+
+                 // -- change stock barang
+                $barang = Barang::find($barangId);
+                $stockOpnameService = new StockOpnameService($barang,$transaksiMasuk->kode,StockOpnameService::BARANG_KELUAR);
+                $stockOpnameService->updateQty($transaksiMasukDetail->qty_barang);
+            }
+
+            DB::commit();
+
+            return redirect()->route('kasir.index')->with('success', 'Selamat, data berhasil disimpan.');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            report($th);
+
+            return response()->json([
+                'error' => $th->getMessage(),
+            ], 500);
         }
-
-
-        return redirect()->route('kasir.index')->with('success', 'Selamat, data berhasil disimpan.');
     }
 }

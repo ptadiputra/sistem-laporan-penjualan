@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Services\StockOpnameService;
 use Illuminate\Http\Request;
 use App\Models\Barang;
 use App\Models\Supplier;
@@ -62,6 +63,11 @@ class LaporanController extends Controller
                     $partialView = 'laporan/component/tabel_pareto_produk';
                     break;
 
+                case 'stock-opname':
+                    $data = $this->stockOpname($startDate, $endDate);
+                    $partialView = 'laporan/component/tabel_stock_opname';
+                    break;
+
                 default:
                     return redirect()->route('laporan.index')->withErrors(['laporan' => 'Laporan tidak valid.']);
             }
@@ -115,12 +121,19 @@ class LaporanController extends Controller
                 $data = $this->paretoProduk($startDate, $endDate);
                 $partialView = 'laporan/pdf/pdf_pareto_produk';
                 break;
+            case 'stock-opname':
+                $data = $this->stockOpname($startDate, $endDate);
+                $partialView = 'laporan/pdf/pdf_stok_opname';
+                break;
             default:
                 return redirect()->route('laporan.index')->withErrors(['laporan' => 'Laporan tidak valid.']);
         }
 
         // export pdf
         $pdf = Pdf::loadView($partialView, compact('data', 'periode'));
+        if ($laporan === 'stock-opname') {
+            $pdf->setPaper('a4', 'landscape');
+        }
         return $pdf->stream('laporan-' . $laporan . '.pdf');
     }
 
@@ -192,6 +205,55 @@ class LaporanController extends Controller
         return [
             "data" => $data,
             "total" => $total,
+        ];
+    }
+
+    private function stockOpname($start_date, $end_date)
+    {
+        $start = Carbon::parse($start_date)->startOfDay();
+        $end = Carbon::parse($end_date)->endOfDay();
+
+        // Ambil data barang dengan relasi stockOpname
+        $barangs = Barang::with('stockOpname')->get();
+
+        // Hitung laporan per barang
+        $data = $barangs->map(function ($barang) use ($start, $end) {
+            $opnames = $barang->stockOpname;
+
+            // Cari stok awal sebelum periode
+            $before = $opnames->where('created_at', '<', $start)->sortByDesc('created_at')->first();
+            $stok_awal = $before ? $before->curr_qty : 0;
+
+            // Ambil transaksi dalam periode
+            $filtered = $opnames->filter(
+                fn($item) =>
+                $item->created_at >= $start && $item->created_at <= $end
+            );
+
+            $masuk = $filtered->whereIn('ref_type', [StockOpnameService::BARANG_MASUK, StockOpnameService::CANCEL_BARANG_KELUAR])->sum('trx_qty');
+            $keluar = $filtered
+                ->whereIn('ref_type', [StockOpnameService::BARANG_KELUAR, StockOpnameService::CANCEL_BARANG_MASUK])
+                ->map(fn($item) => abs($item->trx_qty))
+                ->sum();
+            $akhir = $stok_awal + $masuk - $keluar;
+
+            return [
+                'nama' => $barang->nama,
+                'satuan' => $barang->satuan,
+                'harga' => $barang->harga,
+                'stok_awal' => $stok_awal,
+                'nilai_awal' => $stok_awal * $barang->harga,
+                'masuk' => $masuk,
+                'nilai_masuk' => $masuk * $barang->harga,
+                'keluar' => $keluar,
+                'nilai_keluar' => $keluar * $barang->harga,
+                'stok_akhir' => $akhir,
+                'nilai_akhir' => $akhir * $barang->harga,
+            ];
+        });
+
+        return [
+            "data" => $data,
         ];
     }
 }

@@ -74,7 +74,7 @@
                                 </div>
                             @enderror
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="stock">Stock</label>
                             <input type="number" class="form-control @error('stock') is-invalid @enderror" id="stock" name="stock" value="{{ old('stock', $barang->stock) }}">
                             @error('stock')
@@ -82,7 +82,7 @@
                                     {{ $message }}
                                 </div>
                             @enderror
-                        </div>
+                        </div> --}}
                         <div class="text-right pt-3">
                             <a href="{{ route('barang.index') }}" class="btn btn-secondary"><i class="fas fa-chevron-circle-left"></i> Kembali</a>
                             <button type="submit" class="btn btn-primary"><i class="far fa-save"></i> Simpan</button>

@@ -45,7 +45,7 @@
                     </li>
                 @endif
 
-                @if (auth()->user()->hasRole(['superadmin','kasir', 'admin']))
+                @if (auth()->user()->hasRole(['superadmin','admin']))
                     <li class="nav-item">
                         <a href="{{ route('transaksi-keluar.index') }}"
                             class="nav-link {{ Request::routeIs('transaksi-keluar.*') ? 'active' : '' }}">
@@ -57,7 +57,7 @@
                     </li>
                 @endif
 
-                @if (auth()->user()->hasRole(['superadmin', 'admin','owner']))
+                @if (auth()->user()->hasRole(['superadmin', 'admin','owner','kasir']))
                     <li
                         class="nav-item {{ Request::routeIs(['user.*', 'supplier.*', 'barang.*', 'jasa.*',   'kategori-barang.*', 'customer.*']) ? 'menu-open' : '' }}">
                         <a href="#"
@@ -113,7 +113,7 @@
                                 </a>
                             </li>
                             @endif
-                            @if (auth()->user()->hasRole(['superadmin','admin']))
+                            @if (auth()->user()->hasRole(['superadmin','kasir']))
                             <li class="nav-item">
                                 <a href="{{ route('customer.index') }}"
                                     class="nav-link {{ Request::routeIs('customer.*') ? 'active' : '' }}">

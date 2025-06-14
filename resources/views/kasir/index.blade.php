@@ -23,7 +23,6 @@
     <form action="{{ route('kasir.store') }}" method="post">
         @csrf
         <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
-        <input type="hidden" name="akun" value="Penjualan">
         <input type="hidden" name="sub_total" id="sub_total" value="0">
         <input type="hidden" name="total" id="total" value="0">
 

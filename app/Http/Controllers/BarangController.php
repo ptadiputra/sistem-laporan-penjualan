@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Barang;
 use App\Http\Controllers\Controller;
 use App\Models\KategoriBarang;
+use App\Models\StockOpname;
 use Illuminate\Http\Request;
 
 class BarangController extends Controller
@@ -42,7 +43,7 @@ class BarangController extends Controller
             'kategori_id' => 'required',
             'satuan' => 'required|max:255',
             'harga' => 'required|numeric|min:0',
-            'stock' => 'required|numeric|min:0',
+            // 'stock' => 'required|numeric|min:0',
         ]);
 
 
@@ -55,9 +56,13 @@ class BarangController extends Controller
      */
     public function show(Barang $barang)
     {
+        $stockOpname = StockOpname::where('barang_id',$barang->id)
+            ->latest()
+            ->paginate(10);
         return view('barang/show', [
             "title" => "Barang",
-            "barang" => $barang
+            "barang" => $barang,
+            "stock_opname"=> $stockOpname
         ]);
     }
 
@@ -83,7 +88,7 @@ class BarangController extends Controller
             'kategori_id' => 'required',
             'satuan' => 'required|max:255',
             'harga' => 'required|numeric|min:0',
-            'stock' => 'required|numeric|min:0',
+            // 'stock' => 'required|numeric|min:0',
         ]);
 
         $barang->update($validatedData);

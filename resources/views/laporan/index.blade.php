@@ -41,6 +41,8 @@
                                     </option>
                                     <option value="pareto-produk" @selected(old('laporan') == 'pareto-produk')>Laporan Pareto Produk
                                     </option>
+                                    <option value="stock-opname" @selected(old('laporan') == 'stock-opname')>Laporan Stock Opname
+                                    </option>
                                 </select>
                                 @error('laporan')
                                     <div class="invalid-feedback">{{ $message }}</div>

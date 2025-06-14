@@ -14,4 +14,10 @@ class Barang extends Model
     {
         return $this->belongsTo(KategoriBarang::class, 'kategori_id');
     }
+
+
+    public function stockOpname()
+    {
+        return $this->hasMany(StockOpname::class, 'barang_id');
+    }
 }

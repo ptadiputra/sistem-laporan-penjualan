@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\TransaksiMasuk;
+use App\Models\TransaksiMasukDetail;
 use App\Models\User;
 use App\Models\Jasa;
 use App\Models\Barang;
 use App\Http\Controllers\Controller;
+use App\Services\StockOpnameService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TransaksiMasukController extends Controller
 {
@@ -57,10 +60,10 @@ class TransaksiMasukController extends Controller
             $kode = $last_data->id + 1;
         }
         $kode = str_pad($kode, 4, '0', STR_PAD_LEFT);
-        
+
         // -- save data
-        $validatedData['kode'] =  "TM-".$kode;
-        $transaksiMasuk =  TransaksiMasuk::create($validatedData);
+        $validatedData['kode'] = "TM-" . $kode;
+        $transaksiMasuk = TransaksiMasuk::create($validatedData);
 
         // -- change stock barang
         $qty = $transaksiMasuk->qty_barang;
@@ -119,10 +122,31 @@ class TransaksiMasukController extends Controller
      */
     public function destroy(TransaksiMasuk $transaksiMasuk)
     {
-        $transaksiMasuk->delete();
 
-        session()->flash('success', 'Selamat, data berhasil dihapus.');
-        return response()->json(['status' => 'success']);
+        try {
+            DB::beginTransaction();
+            $items = TransaksiMasukDetail::where('transaksi_masuk_id', $transaksiMasuk->id)->get();
+            foreach ($items as $item) {
+                // -- change stock barang
+                $barang = Barang::find($item->barang_id);
+                $stockOpnameService = new StockOpnameService($barang, $transaksiMasuk->kode, StockOpnameService::CANCEL_BARANG_KELUAR);
+                $stockOpnameService->updateQty($item->qty_barang);
+            }
+
+
+            $transaksiMasuk->delete();
+            DB::commit();
+
+            session()->flash('success', 'Selamat, data berhasil dihapus.');
+            return response()->json(['status' => 'success']);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            report($th);
+
+            return response()->json([
+                'error' => $th->getMessage(),
+            ], 500);
+        }
     }
 
     public function nota(TransaksiMasuk $transaksiMasuk)
