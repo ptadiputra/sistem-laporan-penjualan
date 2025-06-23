@@ -47,6 +47,8 @@ class BarangController extends Controller
         ]);
 
 
+        $validatedData['stock'] = 0;
+
         Barang::create($validatedData);
         return redirect()->route('barang.index')->with('success', 'Selamat, data berhasil disimpan.');
     }
