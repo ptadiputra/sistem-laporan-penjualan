@@ -68,6 +68,11 @@ class LaporanController extends Controller
                     $data = $this->stockOpname($startDate, $endDate);
                     $partialView = 'laporan/component/tabel_stock_opname';
                     break;
+                
+                     case 'data-pengiriman':
+                    $data = $this->dataPengiriman($startDate, $endDate);
+                    $partialView = 'laporan/component/tabel_data_pengiriman';
+                    break;
 
                 default:
                     return redirect()->route('laporan.index')->withErrors(['laporan' => 'Laporan tidak valid.']);
@@ -125,6 +130,10 @@ class LaporanController extends Controller
             case 'stock-opname':
                 $data = $this->stockOpname($startDate, $endDate);
                 $partialView = 'laporan/pdf/pdf_stok_opname';
+                break;
+             case 'data-pengiriman':
+                $data = $this->dataPengiriman($startDate, $endDate);
+                $partialView = 'laporan/pdf/pdf_data_pengiriman';
                 break;
             default:
                 return redirect()->route('laporan.index')->withErrors(['laporan' => 'Laporan tidak valid.']);
@@ -279,5 +288,35 @@ class LaporanController extends Controller
             "data" => $data,
         ];
     }
+
+    private function dataPengiriman($start_date, $end_date)
+{
+    $start = Carbon::parse($start_date)->startOfDay();
+    $end   = Carbon::parse($end_date)->endOfDay();
+
+    $data = TransaksiMasuk::query()
+        ->select([
+            'transaksi_masuks.kode',
+            'transaksi_masuks.tanggal_pengiriman',
+            'customers.nama              as customer',
+            'pengiriman.daerah_pengiriman',
+            'barangs.nama                as barang',
+            'kategori_barangs.nama       as kategori',  
+            'transaksi_masuk_details.qty_barang',
+            'transaksi_masuk_details.harga_satuan_barang',
+            'transaksi_masuk_details.harga_total',
+        ])
+        ->join('transaksi_masuk_details', 'transaksi_masuk_details.transaksi_masuk_id', '=', 'transaksi_masuks.id')
+        ->join('barangs',                 'barangs.id',                 '=', 'transaksi_masuk_details.barang_id')
+        ->join('kategori_barangs',        'kategori_barangs.id',        '=', 'barangs.kategori_id')
+        ->join('customers',               'customers.id',               '=', 'transaksi_masuks.customer_id')
+        ->join('pengiriman',              'pengiriman.id',              '=', 'transaksi_masuks.pengiriman_id')
+        ->whereBetween('transaksi_masuks.tanggal_pengiriman', [$start, $end])
+        ->orderBy('transaksi_masuks.tanggal_pengiriman')    
+        ->get();
+
+    return ['data' => $data];
+}
+
 
 }

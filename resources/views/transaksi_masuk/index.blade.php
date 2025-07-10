@@ -64,7 +64,7 @@
                                                     class="btn btn-primary btn-sm mr-1" target="_blank"><i
                                                         class="fas fa-receipt"></i> Surat Jalan</a>
                                                 {{-- <a href="{{ route('transaksi-masuk.edit', $transaksi_masuk->id) }}" class="btn btn-warning btn-sm mr-1"><i class="fas fa-edit"></i> Edit</a> --}}
-                                                @if (!auth()->user()->hasRole(['admin']))
+                                                @if (!auth()->user()->hasRole(['admin','kasir']))
                                                     <a href="{{ route('transaksi-masuk.destroy', $transaksi_masuk->id) }}"
                                                         class="btn btn-danger btn-sm mr-1 delete-confirm"><i
                                                             class="fas fa-trash"></i> Hapus</a>

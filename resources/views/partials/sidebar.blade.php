@@ -33,7 +33,7 @@
                     </li>
                 @endif
 
-                @if (auth()->user()->hasRole(['superadmin', 'admin']))
+                @if (auth()->user()->hasRole(['superadmin', 'admin','kasir']))
                     <li class="nav-item">
                         <a href="{{ route('transaksi-masuk.index') }}"
                             class="nav-link {{ Request::routeIs('transaksi-masuk.*') ? 'active' : '' }}">
