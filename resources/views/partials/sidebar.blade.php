@@ -39,7 +39,7 @@
                             class="nav-link {{ Request::routeIs('transaksi-masuk.*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-folder-plus"></i>
                             <p>
-                                Pemasukan
+                                Penjualan
                             </p>
                         </a>
                     </li>
@@ -51,7 +51,7 @@
                             class="nav-link {{ Request::routeIs('transaksi-keluar.*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-folder-minus"></i>
                             <p>
-                                Pengeluaran
+                                Pembelian
                             </p>
                         </a>
                     </li>
@@ -120,6 +120,28 @@
                                     <i class="nav-icon far fa-circle"></i>
                                     <p>
                                         Customer
+                                    </p>
+                                </a>
+                            </li>
+                            @endif
+                            @if (auth()->user()->hasRole(['superadmin','admin']))
+                            <li class="nav-item">
+                                <a href="{{ route('pengiriman.index') }}"
+                                    class="nav-link {{ Request::routeIs('pengiriman.*') ? 'active' : '' }}">
+                                    <i class="nav-icon far fa-circle"></i>
+                                    <p>
+                                        Pengiriman
+                                    </p>
+                                </a>
+                            </li>
+                            @endif
+                            @if (auth()->user()->hasRole(['superadmin','admin']))
+                            <li class="nav-item">
+                                <a href="{{ route('stock_opname.index') }}"
+                                    class="nav-link {{ Request::routeIs('stock_opname.*') ? 'active' : '' }}">
+                                    <i class="nav-icon far fa-circle"></i>
+                                    <p>
+                                        Stock Opname
                                     </p>
                                 </a>
                             </li>

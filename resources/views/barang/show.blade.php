@@ -61,7 +61,7 @@
                             </tbody>
                         </table>
                     
-                        <h5 class="mt-5 mb-3">Riwayat Stock Opname</h5>
+                        {{-- <h5 class="mt-5 mb-3">Riwayat Stock Opname</h5>
                     
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered">
@@ -94,7 +94,7 @@
                     
                         <div class="d-flex justify-content-between align-items-center mt-3">
                             {{ $stock_opname->links('pagination::bootstrap-5') }}
-                        </div>
+                        </div> --}}
                     
                     </div>
                     

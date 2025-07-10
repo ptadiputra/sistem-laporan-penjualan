@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Laporan Transaksi Keluar</title>
+    <title>Laporan Pembelin</title>
     <link rel="stylesheet" href="{{ public_path('css/pdf.css') }}">
 </head>
 <body>
     <div style="text-align: center;">
         <img class="logo" src="{{ public_path('img/logo.webp') }}" alt="Logo">
     </div>
-    <h3 class="title">Laporan Transaksi Keluar</h3>
+    <h3 class="title">Laporan Pembelin</h3>
     <p class="periode">Periode: {{ $periode }}</p>
     
     <table class="table table-bordered mb-4">

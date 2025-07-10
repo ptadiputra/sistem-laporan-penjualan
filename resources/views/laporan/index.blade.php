@@ -32,9 +32,9 @@
                                 <select id="laporan" name="laporan"
                                     class="form-control @error('laporan') is-invalid @enderror">
                                     <option value="">Pilih Laporan</option>
-                                    <option value="transaksi-masuk" @selected(old('laporan') == 'transaksi-masuk')>Laporan Transaksi Masuk
+                                    <option value="transaksi-masuk" @selected(old('laporan') == 'transaksi-masuk')>Laporan Penjulan
                                     </option>
-                                    <option value="transaksi-keluar" @selected(old('laporan') == 'transaksi-keluar')>Laporan Transaksi Keluar
+                                    <option value="transaksi-keluar" @selected(old('laporan') == 'transaksi-keluar')>Laporan Pembelian
                                     </option>
                                     <option value="data-barang" @selected(old('laporan') == 'data-barang')>Laporan Data Barang</option>
                                     <option value="data-supplier" @selected(old('laporan') == 'data-supplier')>Laporan Data Supplier
@@ -111,7 +111,7 @@
 
             function togglePeriodeField() {
                 let laporan = $('#laporan').val();
-                if (laporan === 'data-barang' || laporan === 'data-supplier') {
+                if (laporan === 'data-barang' || laporan === 'data-supplier'||laporan === 'stock-opname') {
                     $('#form-periode').addClass('d-none');
                     $('#tanggal-hari-ini').removeClass('d-none');
                 } else {

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PengirimanController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\KategoriBarangController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\TransaksiMasukController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\StokOpnameController;
 
 // -- auth
 Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
@@ -27,6 +29,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':superadmin,admin,kasir'])->
     Route::resource('/transaksi-masuk', TransaksiMasukController::class)->middleware('auth');
     Route::get('/transaksi-masuk/harga_jasa/{id}', [TransaksiMasukController::class, 'harga_jasa'])->name('transaksi-masuk.harga_jasa')->middleware('auth');
     Route::get('/transaksi-masuk/nota/{transaksiMasuk}', [TransaksiMasukController::class, 'nota'])->name('transaksi-masuk.nota')->middleware('auth');
+     Route::get('/transaksi-masuk/surat_jalan/{transaksiMasuk}', [TransaksiMasukController::class, 'surat_jalan'])->name('transaksi-masuk.surat_jalan')->middleware('auth');
 
     // -- kasir
     Route::resource('/kasir', KasirController::class);
@@ -57,9 +60,16 @@ Route::middleware(['auth', RoleMiddleware::class . ':superadmin,kasir,admin'])->
     // -- barang
     Route::resource('/barang', BarangController::class)->middleware('auth');
 
+    Route::resource('/pengiriman', PengirimanController::class)->middleware('auth');
 
     // -- customer
     Route::resource('/customer', CustomerController::class)->middleware('auth');
+
+    Route::get('/stock-opname', [StokOpnameController::class, 'index'])->name('stock_opname.index')->middleware('auth');
+    Route::post('/stock-opname', [StokOpnameController::class, 'store'])->name('stock_opname.store')->middleware('auth');
+    Route::get('/stock-opname/{id}', [StokOpnameController::class, 'show'])->name('stock_opname.show')->middleware('auth');
+    Route::get('/stock-opname/edit_item/{id}', [StokOpnameController::class, 'edit_item'])->name('stock_opname.edit_item')->middleware('auth');
+    Route::put('/stock-opname/update_item/{id}', [StokOpnameController::class, 'update_item'])->name('stock_opname.update_item')->middleware('auth');
 });
 
 

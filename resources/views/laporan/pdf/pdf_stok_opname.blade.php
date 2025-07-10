@@ -16,37 +16,27 @@
             <tr>
                 <th>No</th>
             <th>Nama</th>
+            <th>Kategori</th>
             <th>Satuan</th>
-            <th>Harga</th>
-            <th>Stok Awal</th>
-            <th>Nilai Awal</th>
-            <th>Stock Masuk</th>
-            <th>Nilai Masuk</th>
-            <th>Stok Keluar</th>
-            <th>Nili Keluar</th>
-            <th>Stok Akhir</th>
-            <th>Nilai Akhir</th>
+            <th>Jumlah di Catatan</th>
+            <th>Jumlah Fisik</th>
+            <th>Catatan</th>
             </tr>
         </thead>
         <tbody>
             @forelse ($data['data'] as $item)
                 <tr>
-                    <td>{{ $loop->iteration }}</td>
-                <td>{{ $item['nama']}}</td>
-                <td>{{ $item['satuan']}}</td>
-                <td>{{ $item['harga']}}</td>
-                <td>{{ $item['stok_awal']}}</td>
-                <td class="to-currency">{{ $item['nilai_awal']}}</td>
-                <td>{{ $item['masuk']}}</td>
-                <td class="to-currency">{{ $item['nilai_masuk']}}</td>
-                <td>{{ $item['keluar']}}</td>
-                <td class="to-currency">{{ $item['nilai_keluar']}}</td>
-                <td>{{ $item['stok_akhir']}}</td>
-                <td class="to-currency">{{ $item['nilai_akhir']}}</td>
+                  <td>{{ $loop->iteration }}</td>
+                <td>{{ $item->nama}}</td>
+                <td>{{ $item->kategori}}</td>
+                <td>{{ $item->satuan}}</td>
+                <td>{{ $item->stok_sistem}}</td>
+                <td>{{ $item->stok_fisik}}</td>
+                <td>{{ $item->keterangan}}</td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="4" class="text-center">Tidak ada data.</td>
+                    <td colspan="7" class="text-center">Tidak ada data.</td>
                 </tr>
             @endforelse
         </tbody>

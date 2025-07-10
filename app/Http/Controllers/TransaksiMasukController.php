@@ -21,7 +21,7 @@ class TransaksiMasukController extends Controller
     public function index()
     {
         return view('transaksi_masuk/index', [
-            "title" => "Transaksi Masuk",
+            "title" => "Penjualan",
             "transaksi_masuks" => TransaksiMasuk::latest()->get()
         ]);
     }
@@ -32,7 +32,7 @@ class TransaksiMasukController extends Controller
     public function create()
     {
         return view('transaksi_masuk/create', [
-            "title" => "Transaksi Masuk",
+            "title" => "Penjualan",
             "barangs" => Barang::all(),
         ]);
     }
@@ -80,7 +80,7 @@ class TransaksiMasukController extends Controller
     public function show(TransaksiMasuk $transaksiMasuk)
     {
         return view('transaksi_masuk/show', [
-            "title" => "Transaksi Masuk",
+            "title" => "Penjualan",
             "transaksi_masuk" => $transaksiMasuk
         ]);
     }
@@ -91,7 +91,7 @@ class TransaksiMasukController extends Controller
     public function edit(TransaksiMasuk $transaksiMasuk)
     {
         return view('transaksi_masuk/edit', [
-            "title" => "Transaksi Masuk",
+            "title" => "Penjualan",
             "barangs" => Barang::all(),
             "transaksi_masuk" => $transaksiMasuk,
         ]);
@@ -159,8 +159,18 @@ class TransaksiMasukController extends Controller
         return $pdf->stream('nota-' . $transaksi->kode . '.pdf');
 
         // return view('transaksi_masuk/pdf/pdf_nota', [
-        //     "title" => "Transaksi Masuk",
+        //     "title" => "Penjualan",
         //     "transaksi" => $transaksiMasuk
         // ]);
+    }
+
+     public function surat_jalan(TransaksiMasuk $transaksiMasuk)
+    {
+        // export pdf
+        $transaksi = $transaksiMasuk;
+        $partialView = 'transaksi_masuk/pdf/pdf_surat_jalan';
+        $pdf = Pdf::loadView($partialView, compact('transaksi'))
+            ->setPaper('a5', 'portrait');
+        return $pdf->stream('surat_jalan-' . $transaksi->kode . '.pdf');
     }
 }

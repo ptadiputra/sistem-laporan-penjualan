@@ -20,7 +20,7 @@ class TransaksiKeluarController extends Controller
     public function index()
     {
         return view('transaksi_keluar/index', [
-            "title" => "Transaksi Keluar",
+            "title" => "Pembelian",
             "transaksi_keluars" => TransaksiKeluar::latest()->get()
         ]);
     }
@@ -31,7 +31,7 @@ class TransaksiKeluarController extends Controller
     public function create()
     {
         return view('transaksi_keluar/create', [
-            "title" => "Transaksi Keluar",
+            "title" => "Pembelian",
             "users" => User::all(),
             "suppliers" => Supplier::all(),
             "barangs" => Barang::all(),
@@ -92,7 +92,7 @@ class TransaksiKeluarController extends Controller
     public function show(TransaksiKeluar $transaksiKeluar)
     {
         return view('transaksi_keluar/show', [
-            "title" => "Transaksi Keluar",
+            "title" => "Pembelian",
             "transaksi_keluar" => $transaksiKeluar
         ]);
     }
@@ -102,8 +102,9 @@ class TransaksiKeluarController extends Controller
      */
     public function edit(TransaksiKeluar $transaksiKeluar)
     {
+        Log::debug($transaksiKeluar);
         return view('transaksi_keluar/edit', [
-            "title" => "Transaksi Keluar",
+            "title" => "Pembelian",
             "users" => User::all(),
             "suppliers" => Supplier::all(),
             "barangs" => Barang::all(),

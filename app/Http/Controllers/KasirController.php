@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Barang;
 use App\Models\Customer;
+use App\Models\Pengiriman;
 use App\Models\TransaksiMasuk;
 use App\Models\TransaksiMasukDetail;
 use App\Services\StockOpnameService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Log;
 
 class KasirController extends Controller
 {
@@ -19,6 +21,7 @@ class KasirController extends Controller
             "title" => "Kasir",
             "barangs" => Barang::all(),
             "customers" => Customer::all(),
+            "pengirimans" => Pengiriman::all(),
         ]);
     }
 
@@ -31,10 +34,11 @@ class KasirController extends Controller
             'customer_id' => 'required',
             'sub_total' => 'required',
             'diskon' => 'required',
-            'biaya_pengiriman' => 'required',
+            'biaya_pengiriman' => 'nullable',
             'total' => 'required',
-            'tanggal_pengiriman' => 'required',
-            'alamat_pengiriman' => 'required',
+            'pengiriman_id' => 'nullable',
+            'tanggal_pengiriman' => 'nullable',
+            'alamat_pengiriman' => 'nullable',
             'catatan_pengiriman' => 'nullable|string',
 
             // field TransaksiMasukDetail
@@ -65,6 +69,7 @@ class KasirController extends Controller
                 'diskon' => $validatedData['diskon'],
                 'biaya_pengiriman' => $validatedData['biaya_pengiriman'],
                 'total' => $validatedData['total'],
+                'pengiriman_id' => $validatedData['pengiriman_id'],
                 'tanggal_pengiriman' => $validatedData['tanggal_pengiriman'],
                 'alamat_pengiriman' => $validatedData['alamat_pengiriman'],
                 'catatan_pengiriman' => $validatedData['catatan_pengiriman'] ?? null,
@@ -93,7 +98,7 @@ class KasirController extends Controller
 
             DB::commit();
 
-            return redirect()->route('kasir.index')->with('success', 'Selamat, data berhasil disimpan.');
+            return redirect()->route('transaksi-masuk.index')->with('success', 'Selamat, data berhasil disimpan.');
         } catch (\Throwable $th) {
             DB::rollBack();
             report($th);

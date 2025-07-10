@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h4 class="mb-0">Laporan Transaksi Masuk</h4>
+        <h4 class="mb-0">Laporan Penjualan</h4>
         <p class="font-italic mb-0">Periode: {{ $periode }}</p>
     </div>
     <div>

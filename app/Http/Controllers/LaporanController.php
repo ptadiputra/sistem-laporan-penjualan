@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\StockOpnameBarang;
 use App\Services\StockOpnameService;
 use Illuminate\Http\Request;
 use App\Models\Barang;
@@ -208,7 +209,7 @@ class LaporanController extends Controller
         ];
     }
 
-    private function stockOpname($start_date, $end_date)
+    private function stockOpname2($start_date, $end_date)
     {
         $start = Carbon::parse($start_date)->startOfDay();
         $end = Carbon::parse($end_date)->endOfDay();
@@ -256,4 +257,27 @@ class LaporanController extends Controller
             "data" => $data,
         ];
     }
+
+    private function stockOpname($start_date, $end_date)
+    {
+        $data = StockOpnameBarang::select(
+            'barangs.nama',
+            'kategori_barangs.nama as kategori',
+            'barangs.satuan',
+            'detail_stock_opname_barang.stok_sistem',
+            'detail_stock_opname_barang.stok_fisik',
+            'detail_stock_opname_barang.selisih',
+            'detail_stock_opname_barang.keterangan'
+        )
+            ->join('detail_stock_opname_barang', 'stock_opname_barang.id', '=', 'detail_stock_opname_barang.stock_opname_barang_id')
+            ->join('barangs', 'detail_stock_opname_barang.barang_id', 'barangs.id')
+            ->join('kategori_barangs', 'barangs.kategori_id', 'kategori_barangs.id')
+            ->whereBetween('stock_opname_barang.tanggal', [$start_date, $end_date])
+            ->get();
+
+        return [
+            "data" => $data,
+        ];
+    }
+
 }
