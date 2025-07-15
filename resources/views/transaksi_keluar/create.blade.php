@@ -90,7 +90,7 @@
 
                         <div class="form-group">
                             <label for="harga_satuan">Harga Satuan</label>
-                            <input type="number" class="form-control @error('harga_satuan') is-invalid @enderror" id="harga_satuan" name="harga_satuan" value="{{ old('harga_satuan', 0) }}" readonly>
+                            <input type="number" class="form-control @error('harga_satuan') is-invalid @enderror" id="harga_satuan" name="harga_satuan" value="{{ old('harga_satuan', 0) }}" >
                             @error('harga_satuan')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
